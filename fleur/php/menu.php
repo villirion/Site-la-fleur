@@ -1,29 +1,28 @@
     <div class="menu">
         <ul>
             <form action="" method="post">
-                <li><input type="submit" name="index" class="button" value="acceuil" /></li>
-                <li><input type="submit" name="bulbes" class="button" value="bulbes" /></li>
-                <li><input type="submit" name="rosiers" class="button" value="rosiers" /></li>
-                <li><input type="submit" name="massif" class="button" value="massif" /></li>
-                <li><input type="submit" name="contact" class="button" value="contact" /></li>
+                <li><input type="submit" name="accueil" value="accueil" /></li>
+                <li><input type="submit" name="bulbes" value="bulbes" /></li>
+                <li><input type="submit" name="rosiers" value="rosiers" /></li>
+                <li><input type="submit" name="massif" value="massif" /></li>
+                <li><input type="submit" name="contact" value="contact" /></li>
             </form>
         </ul>
     </div>
     <?php 
-        $content = "index";
-        if(array_key_exists('acceuil', $_POST)) {
-            $content = "index";
+        if(array_key_exists('accueil', $_POST)) {
+            $_SESSION['content'] = "index";
         }
         if(array_key_exists('bulbes', $_POST)) {
-            $content = "bulbes";
+            $_SESSION['content'] = "bulbes";
         }
         if(array_key_exists('rosiers', $_POST)) {
-            $content = "rosiers";
+            $_SESSION['content'] = "rosiers";
         }
         if(array_key_exists('massif', $_POST)) {
-            $content = "massif";
+            $_SESSION['content'] = "massif";
         }
         if(array_key_exists('contact', $_POST)) {
-            $content = "contact";
+            $_SESSION['content'] = "contact";
         }
     ?>

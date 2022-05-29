@@ -1,33 +1,60 @@
 <?php
-    $data = fopen("data/catalogue.csv", "r");
-    $bulbes = fopen("php/bulbes.html", "w");
-    $massif = fopen("php/massif.html", "w");
-    $rosiers = fopen("php/rosiers.html", "w");
-    if ($data and $bulbes and $massif and $rosiers) {
-        $tabHead = "<table><tr><td>image</td><td>ref</td><td>nom</td><td>prix</td><td>stock</td></tr>";
-        fwrite($bulbes, $tabHead);
-        fwrite($massif, $tabHead);
-        fwrite($rosiers, $tabHead);
-        while (($line = fgets($data)) !== false) {
-            $tableau = explode(',', $line);
-            $tabLigne = "<tr><td>" . $tableau[1] . "</td><td>" . $tableau[2] . "</td><td>" . $tableau[3] . "</td><td>" . $tableau[4] . "</td><td>" . $tableau[5] . "</td></tr>";
-            if ($tableau[0] == "bulbes") {
-                fwrite($bulbes, $tabLigne);
+    if(array_key_exists('createAccount', $_POST)) {
+        $NewUser = True;
+        $PwdCorrect = True;
+        if(isset($_POST["Mdp"]) and isset($_POST["MdpConf"])){
+            if ($_POST["Mdp"] != $_POST["MdpConf"]){
+                echo "les deux mot de passe doivent etre identique";
+                $PwdCorrect = False;
             }
-            if ($tableau[0] == "massif") {
-                fwrite($massif, $tabLigne);
+        }
+        if(isset($_POST["NomUtilisateur"]) and $PwdCorrect) {
+            $handle = fopen("data/connexion.csv", "r");
+            if ($handle) {
+                while (($line = fgets($handle)) !== false) {
+                    $identifier = explode(',', $line);
+                    if ($_POST["NomUtilisateur"] == $identifier[0]) {
+                        echo "Nom utilisateur deja utiliser";
+                        $NewUser = False;
+                        break;
+                    }
+                }
             }
-            if ($tableau[0] == "rosiers") {
-                fwrite($rosiers, $tabLigne);
+            fclose($handle);
+            if ($NewUser) {
+                $handle = fopen("data/connexion.csv", "a");
+                $newLigne = $_POST["NomUtilisateur"] . "," . $_POST["Mdp"] . "," . $_POST["Email"] . ",";
+                fwrite($handle, $newLigne);
+                fclose($handle);
             }
-        }       
-        $tabFoot = "</table>";
-        fwrite($bulbes, $tabFoot);
-        fwrite($massif, $tabFoot);
-        fwrite($rosiers, $tabFoot);
+        }
     }
-    fclose($data);
-    fclose($bulbes);
-    fclose($massif);
-    fclose($rosiers);
+
+    if(array_key_exists('Login', $_POST)) {
+        $UserFind = False;
+        if(isset($_POST["username"]) and isset($_POST["pwd"])) {
+          $handle = fopen("data/connexion.csv", "r");
+          if ($handle) {
+              while (($line = fgets($handle)) !== false) {
+                  $identifier = explode(',', $line);
+                  if ($_POST["username"] == $identifier[0] and $_POST["pwd"] == $identifier[1]) {
+                      $_SESSION['username'] = $_POST["username"];
+                      $_SESSION['email'] = $identifier[2];
+                      $UserFind = True;
+                      break;
+                  }
+              }
+          }
+          fclose($handle);
+          if ($UserFind) {
+            $_SESSION['status'] = "connecter";
+          }
+        }
+    }
+    
+    if(array_key_exists('sendMail', $_POST)) {
+        $body = "send by " . $_POST["nom"] . " " . $_POST["prenom"] . " le " . $_POST["date"] . " son adresse email est " . $_POST["email"] . " " . $_POST["body"];
+        $subject = $_POST["sujet"];
+        mail("societelafleur5@gmail.com", $subject, $body);
+    }
 ?>
