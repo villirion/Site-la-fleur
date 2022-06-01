@@ -17,15 +17,18 @@
         fwrite($rosiers, $tabHead);
         while (($line = fgets($data)) !== false) {
             $tableau = explode(',', $line);
-            $tabLigne = "
+            $tabLigne = '
             <tr>
-                <td><img src=" . $tableau[1] . " /></td> <td>" . $tableau[2] . "</td> 
-                <td>" . $tableau[3] . " 
-                <button type='button' onclick='minus(this);' name='" . $tableau[2] . "'>-</button>
-                <input type='number' name='" . $tableau[2] . "' value='0' min='0' max='" . $tableau[5] . "' disabled>
-                <button type='button' onclick='plus(this);' name='" . $tableau[2] . "'>+</button>
-                </td> <td>" . $tableau[4] . "</td> <td class = 'stock'>" . $tableau[5] . "</td>
-            </tr>";
+                <td><img src=' . $tableau[1] . ' /></td> <td>' . $tableau[2] . '</td> 
+                <td>' . $tableau[3] . ' 
+                <form action= "" method= "post">
+                    <button type= "button" onclick= "minus(this);" id= "' . $tableau[2] . '">-</button>
+                    <input type= "number" name= "' . $tableau[2] . '" value= "0" min= "0" max= "' . $tableau[5] . '">
+                    <button type= "button" onclick= "plus(this);" id= "' . $tableau[2] . '">+</button>
+                    <input type= "submit" name= "ajoutPanier" value= "Ajouter au panier" />
+                </form>
+                </td> <td>' . $tableau[4] . '</td> <td class =  "stock ">' . $tableau[5] . '</td>
+            </tr>';
             if ($tableau[0] == "bulbes") {
                 fwrite($bulbes, $tabLigne);
             }
@@ -54,7 +57,7 @@
             } 
 
            function plus(e){
-                fieldName = e.getAttribute('name');
+                fieldName = e.getAttribute('id');
                 let allInput = document.getElementsByTagName('input');
                 let i=allInput.length; 
                 while(i--){
@@ -65,13 +68,13 @@
                 let currentVal = allInput[i].value;
                 let max =  allInput[i].getAttribute('max');
                 currentVal++;
-                if (currentVal < max) {
+                if(currentVal < max) {
                     allInput[i].value++;
                 }
             };
 
             function minus(e){
-                fieldName = e.getAttribute('name');
+                fieldName = e.getAttribute('id');
                 let allInput = document.getElementsByTagName('input');
                 let i=allInput.length; 
                 while(i--){
@@ -95,10 +98,4 @@
     fclose($bulbes);
     fclose($massif);
     fclose($rosiers);
-    if (!isset($_SESSION['status'])) {
-        $_SESSION['status'] = "deconnecter";
-    }
-    if (!isset($_SESSION['content'])) {
-        $_SESSION['content'] = "index";
-    }
 ?>
