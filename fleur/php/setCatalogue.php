@@ -1,16 +1,15 @@
 <?php
     session_start();
+    //creer le catalogue
     $data = fopen("data/catalogue.csv", "r");
     $bulbes = fopen("php/bulbes.html", "w");
     $massif = fopen("php/massif.html", "w");
     $rosiers = fopen("php/rosiers.html", "w");
     if ($data and $bulbes and $massif and $rosiers) {
         $tabHead = "
-        <input type='button' name='stock' value='stock' onclick='toggleStock();' />
-        <br>
         <table>
             <tr>
-                <td>image</td> <td>ref</td> <td>description</td> <td>prix</td> <td class = 'stock'>stock</td>
+                <td>image</td> <td>ref</td> <td>description</td> <td>prix</td> <td></td> <td class = 'stock'>stock</td>
             </tr>";
         fwrite($bulbes, $tabHead);
         fwrite($massif, $tabHead);
@@ -20,14 +19,16 @@
             $tabLigne = '
             <tr>
                 <td><img src=' . $tableau[1] . ' /></td> <td>' . $tableau[2] . '</td> 
-                <td>' . $tableau[3] . ' 
+                <td>' . $tableau[3] . ' </td> <td>' . $tableau[4] . '</td> 
+                <td>
                 <form action= "" method= "post">
                     <button type= "button" onclick= "minus(this);" id= "' . $tableau[2] . '">-</button>
                     <input type= "number" name= "' . $tableau[2] . '" value= "0" min= "0" max= "' . $tableau[5] . '">
                     <button type= "button" onclick= "plus(this);" id= "' . $tableau[2] . '">+</button>
-                    <input type= "submit" name= "ajoutPanier" value= "Ajouter au panier" />
+                    <br><input type= "submit" name= "ajoutPanier" value= "Ajouter au panier" />
                 </form>
-                </td> <td>' . $tableau[4] . '</td> <td class =  "stock ">' . $tableau[5] . '</td>
+                </td>
+                <td class =  "stock ">' . $tableau[5] . '</td>
             </tr>';
             if ($tableau[0] == "bulbes") {
                 fwrite($bulbes, $tabLigne);
@@ -41,6 +42,7 @@
         }    
         $tabFoot = "
         </table> 
+        <input type='button' name='stock' value='Afficher stock' onclick='toggleStock();' />
         <script> 
             function toggleStock() { 
                 let stock = document.getElementsByClassName('stock');
@@ -55,8 +57,8 @@
                     }
                 }
             } 
-
-           function plus(e){
+            toggleStock();
+            function plus(e){
                 fieldName = e.getAttribute('id');
                 let allInput = document.getElementsByTagName('input');
                 let i=allInput.length; 
