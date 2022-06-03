@@ -1,0 +1,35 @@
+.contact-form {
+    width: 50%;
+
+    margin-left: auto; 
+    margin-right: auto;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-infos {
+    width: 50%;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-infos p {
+    width: 30%;
+
+    margin-left: 5px;
+
+    text-align: left;
+}
+
+.contact-infos input {
+    width: 50%;
+    height: 14px;
+
+}

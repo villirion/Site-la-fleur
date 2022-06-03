@@ -1,17 +1,18 @@
+body{
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .content {
     display: flex;
-    align-items: stretch;
-    width: 100%;
-    flex: auto;
-    height: auto;
+    height: 1000%;    
+    background-color: #F4CFDF;
 }
 
 .menu {
     background-color: #5784BA;
-    display: flex;
-    justify-items: flex-start;
-    flex-direction: column;
-    margin-right: 0px;
     padding-right: 2.5%;
     padding-left: 2.5%;
 }
@@ -39,7 +40,29 @@
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
+.navbar {
+    background-color: #5784BA;
+    padding-right: 2.5%;
+    padding-left: 2.5%;
+}
+.navbar li{
+    list-style-type: none;
+    padding-bottom: 25%;
+    
+}
+.navbar ul{
+    padding: 10px;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
 
+.navbar input{
+    margin: auto;
+    background-color: #F7F6CF;
+    border-color: #9AC8EB;
+    border-radius: 10%;
+    width: 100px;
+}
 
 table{
     width: 100%;
@@ -48,4 +71,22 @@ table{
 
 }
 
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
 
+.admin-form {
+    width: 50%;
+
+    margin-left: auto; 
+    margin-right: auto;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
