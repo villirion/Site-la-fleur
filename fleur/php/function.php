@@ -65,7 +65,7 @@ if (array_key_exists('panier', $_POST)) {
                     } else {
                         $newLine = $nombre . " x " . $_SESSION[$tableau[2]][1] . " = " . $prix . " €";
                     }
-                    $_SESSION['facture'] .= $newLine;
+                    $_SESSION['facture'] .= $newLine . "\n";
                     $newLine .= "<br> \n";
                     $somme += $prix;
                     fwrite($panier, $newLine);
