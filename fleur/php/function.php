@@ -56,18 +56,20 @@ if (array_key_exists('panier', $_POST)) {
         while (($line = fgets($catalogue)) !== false) {
             $tableau = explode(',', $line);
             if (isset($_SESSION[$tableau[2]])) {
-                $nombre = $_SESSION[$tableau[2]][0];
-                $prix = rtrim($_SESSION[$tableau[2]][2], "€") * $nombre * $tableau[6];
-                if ($tableau[6] < 1) {
-                    $promotion = "-" . (100 - $tableau[6] * 100) . "%";
-                    $newLine = $nombre . " x " . $_SESSION[$tableau[2]][1] . " " . $promotion . " = " . $prix . " €";
-                } else {
-                    $newLine = $nombre . " x " . $_SESSION[$tableau[2]][1] . " = " . $prix . " €";
+                if ($_SESSION[$tableau[2]][0] > 0){
+                    $nombre = $_SESSION[$tableau[2]][0];
+                    $prix = rtrim($_SESSION[$tableau[2]][2], "€") * $nombre * $tableau[6];
+                    if ($tableau[6] < 1) {
+                        $promotion = "-" . (100 - $tableau[6] * 100) . "%";
+                        $newLine = $nombre . " x " . $_SESSION[$tableau[2]][1] . " " . $promotion . " = " . $prix . " €";
+                    } else {
+                        $newLine = $nombre . " x " . $_SESSION[$tableau[2]][1] . " = " . $prix . " €";
+                    }
+                    $_SESSION['facture'] .= $newLine;
+                    $newLine .= "<br> \n";
+                    $somme += $prix;
+                    fwrite($panier, $newLine);
                 }
-                $_SESSION['facture'] .= $newLine;
-                $newLine .= "<br> \n";
-                $somme += $prix;
-                fwrite($panier, $newLine);
             }
         }
     }
@@ -90,7 +92,7 @@ if (array_key_exists('panier', $_POST)) {
 if (array_key_exists('facture', $_POST)) {
     if ($_SESSION['status'] == "connecter") {
         $fileName = "data/catalogue.csv";
-        $catalogue = fopen($fileName, "r+");
+        $catalogue = fopen($fileName, "r");
         $stockSuffisant = true;
         $lines = -1;
         $change = [];
@@ -153,7 +155,7 @@ if (array_key_exists('createAccount', $_POST)) {
         fclose($handle);
         if ($NewUser) {
             $handle = fopen("data/connexion.csv", "a");
-            $newLigne = $_POST["NomUtilisateur"] . "," . $_POST["Mdp"] . "," . $_POST["Email"] . "," . "client" . ",";
+            $newLigne = $_POST["NomUtilisateur"] . "," . $_POST["Mdp"] . "," . $_POST["Email"] . "," . "client" . ",\n";
             fwrite($handle, $newLigne);
             fclose($handle);
         }
@@ -198,7 +200,7 @@ if (array_key_exists('ajoutPanier', $_POST)) {
         while (($line = fgets($handle)) !== false) {
             $identifier = explode(',', $line);
             if (isset($_POST[$identifier[2]])) {
-                if ($_POST[$identifier[2]] > 0) {
+                if ($_POST[$identifier[2]] >= 0) {
                     $_SESSION[$identifier[2]] = [$_POST[$identifier[2]], $identifier[3], $identifier[4]];
                 }
             }
